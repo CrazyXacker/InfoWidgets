@@ -1,0 +1,7 @@
+# Gradle:
+build
+out
+src/test
+.gitignore
+.idea/libraries
+.idea/libraries/
