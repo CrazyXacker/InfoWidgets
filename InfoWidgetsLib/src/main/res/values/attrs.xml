@@ -3,5 +3,11 @@
     <declare-styleable name="BatteryView">
         <attr name="color"/>
         <attr name="warningColor" format="color"/>
+        <attr name="darkModeColor" format="color"/>
+        <attr name="darkModeWarningColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="TextClock">
+        <attr name="darkModeColor" format="color"/>
     </declare-styleable>
 </resources>

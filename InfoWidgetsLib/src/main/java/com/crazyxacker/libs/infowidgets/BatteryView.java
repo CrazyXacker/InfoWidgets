@@ -27,6 +27,8 @@ import android.os.BatteryManager;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import androidx.core.graphics.ColorUtils;
+
 import com.crazyxacker.libs.drawable.BatteryDrawable;
 
 @SuppressLint("AppCompatCustomView")
@@ -34,7 +36,11 @@ public class BatteryView extends TextView {
 
     private int mColor;
     private int mWarningColor;
+    private int mDarkModeColor;
+    private int mDarkModeWarningColor;
     private int mCurrentColor;
+
+    private boolean mIsDarkMode;
 
     private int mLevel = 0;
     private boolean mCharging = false;
@@ -108,10 +114,11 @@ public class BatteryView extends TextView {
                 attrs, R.styleable.BatteryView, defStyleAttr, 0);
         mColor = typedArray.getColor(R.styleable.BatteryView_color, Color.WHITE);
         mWarningColor = typedArray.getColor(R.styleable.BatteryView_warningColor, Color.RED);
+        mDarkModeColor = typedArray.getColor(R.styleable.BatteryView_darkModeColor, Color.WHITE);
+        mDarkModeWarningColor = typedArray.getColor(R.styleable.BatteryView_darkModeWarningColor, Color.WHITE);
         typedArray.recycle();
 
-        mDrawable.setColor(mColor);
-        mDrawable.setWarningColor(mWarningColor);
+        setColors();
     }
 
     private void init() {
@@ -119,6 +126,17 @@ public class BatteryView extends TextView {
         int height = (int) getTextSize();
         mDrawable.setBounds(0, 0, (int) (height / 0.618f), height);
         setCompoundDrawables(mDrawable, null, null, null);
+    }
+
+    public void enableDarkModeDependingOnBackgroundColor(int color) {
+        mIsDarkMode = ColorUtils.calculateLuminance(color) < 0.5;
+        setColors();
+    }
+
+    private void setColors() {
+        mDrawable.setColor(mIsDarkMode ? mDarkModeColor : mColor);
+        mDrawable.setWarningColor(mIsDarkMode ? mDarkModeWarningColor : mColor);
+        setTextColor(mIsDarkMode ? mDarkModeColor : mColor);
     }
 
     @Override

@@ -22,7 +22,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.TypedArray;
 import android.database.ContentObserver;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -32,6 +34,8 @@ import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.ViewDebug.ExportedProperty;
 import android.widget.TextView;
+
+import androidx.core.graphics.ColorUtils;
 
 import com.crazyxacker.libs.utils.DateUtils;
 
@@ -63,6 +67,10 @@ public class TextClock extends TextView {
 
     private Calendar mTime;
     private String mTimeZone;
+
+    private boolean mIsDarkMode;
+    private int mDarkModeColor;
+    private int mColor;
 
     private final ContentObserver mFormatChangeObserver = new ContentObserver(new Handler()) {
         @Override
@@ -117,12 +125,29 @@ public class TextClock extends TextView {
         mTimeZone = TimeZone.getDefault().getID();
 
         init();
+
+        TypedArray typedArray = context.obtainStyledAttributes(
+                attrs, R.styleable.TextClock, defStyle, 0);
+        mColor = typedArray.getColor(R.styleable.BatteryView_color, Color.WHITE);
+        mDarkModeColor = typedArray.getColor(R.styleable.TextClock_darkModeColor, Color.WHITE);
+        typedArray.recycle();
+
+        setColors();
     }
 
     private void init() {
         createTime(mTimeZone);
         // Wait until onAttachedToWindow() to handle the ticker
         chooseFormat(false);
+    }
+
+    public void enableDarkModeDependingOnBackgroundColor(int color) {
+        mIsDarkMode = ColorUtils.calculateLuminance(color) < 0.5;
+        setColors();
+    }
+
+    private void setColors() {
+        setTextColor(mIsDarkMode ? mDarkModeColor : mColor);
     }
 
     private void createTime(String timeZone) {
