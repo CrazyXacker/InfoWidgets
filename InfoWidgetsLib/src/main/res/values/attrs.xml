@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BatteryView">
+    <declare-styleable name="Widgets">
+        <attr name="color"/>
+        <attr name="darkModeColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="BatteryView" parent="Widgets">
         <attr name="color"/>
         <attr name="warningColor" format="color"/>
-        <attr name="darkModeColor" format="color"/>
+        <attr name="darkModeColor"/>
         <attr name="darkModeWarningColor" format="color"/>
     </declare-styleable>
 
-    <declare-styleable name="TextClock">
-        <attr name="darkModeColor" format="color"/>
+    <declare-styleable name="TextClock" parent="Widgets">
+        <attr name="color"/>
+        <attr name="darkModeColor"/>
     </declare-styleable>
 </resources>

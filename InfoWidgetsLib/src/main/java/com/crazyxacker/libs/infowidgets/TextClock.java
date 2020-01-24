@@ -128,7 +128,7 @@ public class TextClock extends TextView {
 
         TypedArray typedArray = context.obtainStyledAttributes(
                 attrs, R.styleable.TextClock, defStyle, 0);
-        mColor = typedArray.getColor(R.styleable.BatteryView_color, Color.WHITE);
+        mColor = typedArray.getColor(R.styleable.TextClock_color, Color.WHITE);
         mDarkModeColor = typedArray.getColor(R.styleable.TextClock_darkModeColor, Color.WHITE);
         typedArray.recycle();
 
