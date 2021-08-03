@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 public class NetSpeedMeter {
     private final Context mContext;
     private final TextView mSpeedView;
-    private final INetSpeedCallback mCallback;
     private final Handler mMainHandler;
     private ScheduledExecutorService mSpeedTimer;
     private Long lastTotalRxBytes = 0L, lastTimeStamp = 0L;
@@ -28,11 +27,10 @@ public class NetSpeedMeter {
     public NetSpeedMeter(Context context, TextView speedView, INetSpeedCallback callback) {
         mContext = context;
         mSpeedView = speedView;
-        mCallback = callback;
         mMainHandler = new Handler(Looper.getMainLooper());
 
         Runnable netSpeedSetTask = () -> mMainHandler.post(() -> mSpeedView.post(() -> {
-            if (mCallback.isShowNetSpeed()) {
+            if (callback.isShowNetSpeed()) {
                 mSpeedView.setVisibility(View.VISIBLE);
                 mSpeedView.setText(getNetSpeed());
             } else {
@@ -52,7 +50,7 @@ public class NetSpeedMeter {
         long nowTimeStamp = System.currentTimeMillis();
         long calculationTime = (nowTimeStamp - lastTimeStamp);
         if (calculationTime == 0) {
-            netSpeed = 1 + kbLocalized;
+            netSpeed = String.format("%s %s", 1, kbLocalized);
             return netSpeed;
         }
         long speed = ((nowTotalRxBytes - lastTotalRxBytes) * 1000 / calculationTime);
@@ -60,9 +58,9 @@ public class NetSpeedMeter {
         lastTotalRxBytes = nowTotalRxBytes;
         if (speed > 1024) {
             DecimalFormat df = new DecimalFormat("######0.0");
-            netSpeed = df.format(getM(speed)) + mbLocalized;
+            netSpeed = String.format("%s %s", df.format(getM(speed)), mbLocalized);
         } else {
-            netSpeed = speed + kbLocalized;
+            netSpeed = String.format("%s %s", speed, kbLocalized);
         }
         return netSpeed;
     }

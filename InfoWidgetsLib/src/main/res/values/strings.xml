@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InfoWidgets</string>
-    <string name="net_speed_kb_s"> kb/s</string>
-    <string name="net_speed_mb_s"> MB/s</string>
+    <string name="app_name" translatable="false">InfoWidgets</string>
+    <string name="net_speed_kb_s">kb/s</string>
+    <string name="net_speed_mb_s">MB/s</string>
 </resources>
